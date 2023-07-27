@@ -22,8 +22,26 @@ num_categories = 1
     y_val: output data (Close) <--- valData
     
 """
+
+x_train = trainData[['Open', 'High', 'Low', 'Volume']].values
+y_train = trainData['Close'].values
+x_test = testData[['Open', 'High', 'Low', 'Volume']].values
+y_test = testData['Close'].values
+x_val = valData[['Open', 'High', 'Low', 'Volume']].values
+y_val = valData['Close'].values
+
+# Create the model
 model = util.CreateModel(num_features, num_categories)
 
+# Compile the model
+model.compile(optimizer='adam', loss='mean_squared_error')
+
+# Train the model
+history = model.fit(x_train, y_train, epochs=25, batch_size=50, validation_data=(x_val, y_val), verbose=1)
+
+# Evaluate the model
+loss = model.evaluate(x_test, y_test)
+print("Test Loss: ", loss)
 
 
 
