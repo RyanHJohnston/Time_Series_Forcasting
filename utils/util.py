@@ -22,8 +22,9 @@ class TimeSeriesDataset(Dataset):
     def __getitem__(self, idx):
         return self.data[idx]
 
-
-def CreatePdDataframeForSingleStockPrice(tickerSymbol = 'TSLA', startDate='2010-1-1', endDate='2023-7-1', period = '1d'):
+# DP - original dates 2010-1-1 to 2023-7-1, scale down for model
+# model like <7 years of data
+def CreatePdDataframeForSingleStockPrice(tickerSymbol = 'TSLA', startDate='2020-1-1', endDate='2023-7-1', period = '1d'):
     tickerSymbol = tickerSymbol
     tickerData = yf.Ticker(tickerSymbol)
     tickerDf = tickerData.history(period=period, start=startDate, end=endDate)

@@ -53,7 +53,7 @@ model.add(Dense(units=1))
 
 #Compiling and fitting the model
 model.compile(optimizer='adam',loss='mean_squared_error')
-model.fit(x=X_train, y=y_train, batch_size=10, epochs=100, validation_data=(X_val, y_val))
+model.fit(x=X_train, y=y_train, batch_size=10, epochs=20, validation_data=(X_val, y_val))
 
 #Testing the Model
 test_data = testData.iloc[:,1:2].values
