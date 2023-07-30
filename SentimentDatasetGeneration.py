@@ -12,24 +12,24 @@ label = pd.DataFrame(columns=['Label'])
 # Group all tweets on a given day into one
 tweets = tweets.groupby('Date').agg(lambda x: ';'.join(x))
 
-# Combine Saturday & Sunday into Friday
+# Combine Saturday & Sunday into Monday
 tweets.reset_index(inplace=True)
 for index, row in tweets.iterrows():
   today_str = row[0]
   today_dt = datetime.strptime(today_str, '%Y-%m-%d')
-  yest_dt = today_dt - timedelta(days = 1)
-  dayb4_dt = today_dt - timedelta(days = 2)
+  tom_dt = today_dt + timedelta(days = 1)
+  next_dt = today_dt + timedelta(days = 2)
   if today_dt.weekday() == 6:
-    tweets.loc[index,'Date'] = dayb4_dt.strftime('%Y-%m-%d')
+    tweets.loc[index,'Date'] = tom_dt.strftime('%Y-%m-%d')
   if today_dt.weekday() == 5:
-    tweets.loc[index,'Date'] = yest_dt.strftime('%Y-%m-%d')
+    tweets.loc[index,'Date'] = next_dt.strftime('%Y-%m-%d')
 tweets = tweets.groupby('Date').agg(lambda x: ';'.join(x))
 
-# Combine holiday with day prior
+# Combine holiday with day after
 tweets.reset_index(inplace=True)
 for index, row in tweets.iterrows():
   if holidays.isin([row[0]]).any().any():
-    tweets.loc[index,'Date'] = tweets.loc[index-1,'Date']
+    tweets.loc[index,'Date'] = tweets.loc[index+1,'Date']
 tweets = tweets.groupby('Date').agg(lambda x: ';'.join(x))
 
 # Change stock data from datetime to date
